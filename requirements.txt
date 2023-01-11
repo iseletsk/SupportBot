@@ -1,0 +1,2 @@
+gpt-index >= 0.2.0
+slack-bolt >= 1.6.0
