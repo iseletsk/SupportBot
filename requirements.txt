@@ -1,2 +1,5 @@
 gpt-index >= 0.2.0
 slack-bolt >= 1.6.0
+python-slugify >= 8.0.0
+GitPython > 3.1.0
+faiss-cpu >= 1.6.3
