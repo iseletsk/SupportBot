@@ -2,10 +2,13 @@ import json
 import os
 import re
 
-from gpt_index import Document
-from gpt_index.readers.file.markdown_parser import MarkdownParser
+from llama_index import Document
+from llama_index.readers.file.markdown_parser import MarkdownParser
+from llama_index import GPTSimpleVectorIndex
+
 from slugify import slugify
 import shutil
+import pickle
 
 WORKDIR = 'workdir-1'
 
@@ -17,6 +20,8 @@ def init_docs(settings, update_git=True):
     if update_git:
         shutil.rmtree(settings['dir'], ignore_errors=True)
         os.system(f'git clone --depth=1 {settings["git"]}')
+        shutil.rmtree(f'{settings["dir"]}/docs/ru', ignore_errors=True)  # remove russian docs
+
     os.chdir(settings['dir'])
     docs = load_md_dirs('docs', settings['prefix'])
     os.chdir(current)
@@ -44,6 +49,10 @@ def load_md_file(path, prefix):
     if not docs[0][1]:
         return documents
     for header, text in docs:
+        if not header:
+            header = ""
+        if not text:
+            continue
         header = cleanup_notranslate(header)
         slug = slugify(header)
         text = f'{header}\n\n{cleanup_notranslate(text)}'
@@ -67,3 +76,17 @@ def load_kb_json(path, strip_html=True):
             d.doc_id = f'KB.{article["id"]}'
             documents.append(d)
         return documents
+
+def save_index(index, path):
+    index.save_to_disk(path)
+    with open(f'{path}.ds', "wb") as f:
+        pickle.dump(index.docstore, f)
+
+
+def load_index(path):
+    with open(f'{path}.ds', "rb") as f:
+        ds = pickle.load(f)
+        ##index = GPTSimpleVectorIndex.load_from_disk(path, docstore=ds)
+        index = GPTSimpleVectorIndex.load_from_disk(path)
+        return index
+

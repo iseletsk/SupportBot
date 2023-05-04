@@ -11,7 +11,6 @@ import doc_loaders
 
 defaults.load_creds()
 
-
 UPDATE_FROM_GIT = False
 
 cl_docs = doc_loaders.init_docs(defaults.cloudlinux_docs, update_git=UPDATE_FROM_GIT)

@@ -1,6 +1,6 @@
 import os
 
-from gpt_index import GPTSimpleVectorIndex
+from llama_index import GPTSimpleVectorIndex
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 

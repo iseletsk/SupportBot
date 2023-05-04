@@ -1,7 +1,7 @@
 import csv
 import json
 
-from gpt_index import QuestionAnswerPrompt, RefinePrompt
+from llama_index import QuestionAnswerPrompt, RefinePrompt
 
 import defaults
 
@@ -29,6 +29,12 @@ def doc_id_to_url(doc_id):
     elif doc_id.startswith('cloudlinux.'):
         url = f'https://docs.cloudlinux.com{doc_id[len("cloudlinux."):]}'
         prefix = 'cloudlinux'
+    elif doc_id.startswith('cln.'):
+        url = f'{defaults.cln_docs["url"]}{doc_id[len("cln."):]}'
+        prefix = 'cln'
+    elif doc_id.startswith('tuxcare.'):
+        url = f'{defaults.tuxcare_docs["url"]}{doc_id[len("tuxcare."):]}'
+        prefix = 'tuxcare'
     elif doc_id.startswith('KB.'):
         kb_id = doc_id[len("KB."):]
         article = get_kb_docs()[kb_id]
@@ -131,3 +137,5 @@ def load_questions():
             if len(line) > 0 and len(line[0]) > 0:
                 questions.append(line[0])
     return questions
+
+

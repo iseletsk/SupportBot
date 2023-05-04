@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Style the container */
+      #container {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+      }
+      /* Style the table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      tr {
+        border-bottom: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket #</th>
+            <th>Subject</th>
+            <th># of replies</th>
+            <th>Product</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+    </div>
+    <script>
+      // Get the table body element
+      const tableBody = document.getElementById('table-body');
+
+      // Load data from the API endpoint
+      fetch('http://localhost:8000/tickets')
+        .then(response => response.json())
+        .then(data => {
+          // Populate the table with data
+          data.forEach(item => {
+            const row = tableBody.insertRow(-1);
+            const ticketIdCell = row.insertCell(0);
+            const subjectCell = row.insertCell(1);
+            const numRepliesCell = row.insertCell(2);
+            const productCell = row.insertCell(3);
+            const statusCell = row.insertCell(4);
+            ticketIdCell.innerText = item.id;
+            subjectCell.innerText = item.prompt;
+            numRepliesCell.innerText = 'xxx' //item.numReplies;
+            productCell.innerText = 'yyy' //item.product;
+            statusCell.innerText = item.status;
+          });
+        })
+        .catch(error => console.error(error));
+    </script>
+  </body>
+</html>
